@@ -1,8 +1,7 @@
 # Portfolio Template
 
-A clean, highly customizable personal portfolio and data science documentation hub template. This custom React application features an automated blog pipeline, a data vault for artifacts, an analytics dashboard, and dynamic project displays. 
+A clean, highly customizable personal portfolio template. This custom React application features an automated blog pipeline, a data vault for artifacts, an analytics dashboard, and dynamic project displays. 
 
-It has been stripped of personal information and is ready for you to clone, customize, and deploy.
 
 ## Features
 - **Responsive Architecture**: Distinct mobile-optimized layouts vs widescreen desktop layouts using a robust `useIsMobile` hook routing system.
