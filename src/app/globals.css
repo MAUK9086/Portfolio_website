@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 33% 96%;
+    --foreground: 30 15% 15%;
+    --card: 42 40% 98%;
+    --card-foreground: 30 15% 15%;
+    --popover: 42 40% 98%;
+    --popover-foreground: 30 15% 15%;
+    --primary: 150 25% 45%;
+    --primary-foreground: 42 33% 96%;
+    --secondary: 42 20% 90%;
+    --secondary-foreground: 30 15% 15%;
+    --muted: 42 20% 90%;
+    --muted-foreground: 30 10% 45%;
+    --accent: 24 75% 65%;
+    --accent-foreground: 42 33% 96%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 42 33% 96%;
+    --border: 42 20% 85%;
+    --input: 42 20% 85%;
+    --ring: 150 25% 45%;
+    --radius: 0.75rem;
+    --sidebar-background: 42 33% 94%;
+    --sidebar-foreground: 30 15% 25%;
+    --sidebar-primary: 150 25% 45%;
+    --sidebar-primary-foreground: 42 33% 96%;
+    --sidebar-accent: 42 20% 88%;
+    --sidebar-accent-foreground: 30 15% 15%;
+    --sidebar-border: 42 20% 80%;
+    --sidebar-ring: 150 25% 45%;
+    --gradient-primary: linear-gradient(135deg, hsl(150 25% 45%) 0%, hsl(24 75% 65%) 100%);
+    --gradient-surface: linear-gradient(180deg, hsl(42 33% 98%) 0%, hsl(42 25% 94%) 100%);
+    --shadow-elegant: 0 10px 40px -10px hsl(30 15% 15% / 0.08);
+    --shadow-soft: 0 4px 20px hsl(30 15% 15% / 0.04);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 30 12% 12%;
+    --foreground: 42 33% 92%;
+    --card: 30 12% 14%;
+    --card-foreground: 42 33% 92%;
+    --popover: 30 12% 12%;
+    --popover-foreground: 42 33% 92%;
+    --primary: 150 25% 55%;
+    --primary-foreground: 30 12% 12%;
+    --secondary: 30 12% 18%;
+    --secondary-foreground: 42 33% 92%;
+    --muted: 30 12% 18%;
+    --muted-foreground: 30 10% 65%;
+    --accent: 24 70% 70%;
+    --accent-foreground: 30 12% 12%;
+    --destructive: 0 60% 40%;
+    --destructive-foreground: 42 33% 92%;
+    --border: 30 12% 20%;
+    --input: 30 12% 20%;
+    --ring: 150 25% 55%;
+    --sidebar-background: 30 12% 14%;
+    --sidebar-foreground: 30 10% 85%;
+    --sidebar-primary: 150 25% 55%;
+    --sidebar-primary-foreground: 30 12% 12%;
+    --sidebar-accent: 30 12% 18%;
+    --sidebar-accent-foreground: 42 33% 92%;
+    --sidebar-border: 30 12% 20%;
+    --sidebar-ring: 150 25% 55%;
+    --gradient-primary: linear-gradient(135deg, hsl(150 25% 55%) 0%, hsl(24 70% 70%) 100%);
+    --gradient-surface: linear-gradient(180deg, hsl(30 12% 14%) 0%, hsl(30 12% 12%) 100%);
+    --shadow-elegant: 0 10px 40px -10px hsl(0 0% 0% / 0.4);
+    --shadow-soft: 0 4px 20px hsl(0 0% 0% / 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-transparent text-foreground;
+    background-color: transparent !important;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: hsl(var(--background));
+  }
+}
+
+@layer utilities {
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .glass {
+    @apply bg-background/70 backdrop-blur-md border border-foreground/5;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .glass-card {
+    @apply bg-background/60 backdrop-blur-xl border border-foreground/5 transition-all duration-300;
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .glass-card:hover {
+    @apply border-primary/20 bg-background/80 -translate-y-0.5;
+    box-shadow: 0 10px 40px -10px hsl(var(--primary) / 0.15);
+  }
+
+  /* Aurora background animation */
+  .aurora-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;
+    overflow: hidden;
+    background-color: hsl(var(--background));
+    pointer-events: none;
+  }
+
+  .aurora-bg::before,
+  .aurora-bg::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.25;
+    animation: float 20s infinite ease-in-out alternate;
+  }
+
+  .aurora-bg::before {
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, hsl(var(--primary)) 0%, transparent 60%);
+    top: -10vw;
+    left: -10vw;
+    animation-delay: 0s;
+  }
+
+  .aurora-bg::after {
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, hsl(var(--accent)) 0%, transparent 60%);
+    bottom: -10vw;
+    right: -10vw;
+    animation-duration: 25s;
+    animation-delay: -5s;
+  }
+
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(3vw, 3vh) scale(1.05); }
+    66% { transform: translate(-3vw, 5vh) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+
+  /* Scrollbars */
+  .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #1e1e1e; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; border: 2px solid #1e1e1e; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+  .toc-scrollbar::-webkit-scrollbar { width: 6px; }
+  .toc-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .toc-scrollbar::-webkit-scrollbar-thumb { background: rgba(150,150,150,0.4); border-radius: 4px; }
+  .toc-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(150,150,150,0.6); }
+
+  /* Diary / book page styles */
+  .diary-page-texture {
+    background-color: #fdf9f0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);
+    background-size: 100% 28px, 100% 28px;
+  }
+
+  .diary-book-shadow {
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.1),
+      0 8px 24px rgba(0,0,0,0.15),
+      inset -2px 0 4px rgba(0,0,0,0.08);
+  }
+
+  /* Scrapbook / personal blog styles */
+  .scrapbook-bg {
+    background-color: #faf6f0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  .polaroid {
+    background: white;
+    padding: 8px 8px 32px 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .sticky-note {
+    background: #fef9c3;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.12), inset 0 -2px 4px rgba(0,0,0,0.05);
+    position: relative;
+  }
+
+  .sticky-note::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 2px 2px 0 0;
+  }
+
+  /* Polaroid tilt variants */
+  .polaroid-tilt-left { transform: rotate(-1.5deg); }
+  .polaroid-tilt-right { transform: rotate(1.5deg); }
+  .polaroid-tilt-slight-left { transform: rotate(-0.8deg); }
+  .polaroid-tilt-slight-right { transform: rotate(0.8deg); }
+}

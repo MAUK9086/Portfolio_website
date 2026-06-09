@@ -19,7 +19,9 @@ export default {
 		},
 			extend: {
 				fontFamily: {
-					sans: ['Inter', 'sans-serif'],
+					sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+					lora: ['var(--font-lora)', 'Lora', 'Georgia', 'serif'],
+					caveat: ['var(--font-caveat)', 'Caveat', 'cursive'],
 				},
 				colors: {
 					border: 'hsl(var(--border))',
