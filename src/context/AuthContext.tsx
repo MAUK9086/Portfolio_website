@@ -1,46 +1,53 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type User = { id: string; email?: string } | null;
+'use client'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import type { User, Session } from '@supabase/supabase-js'
 
 interface AuthContextType {
-  session: any;
-  user: User;
-  loading: boolean;
-  signOut: () => Promise<void>;
+  user: User | null
+  session: Session | null
+  loading: boolean
+  signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
-  session: null,
   user: null,
+  session: null,
   loading: true,
   signOut: async () => {},
-});
+})
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null)
+  const [session, setSession] = useState<Session | null>(null)
+  const [loading, setLoading] = useState(true)
+  const supabase = createClient()
 
   useEffect(() => {
-    // Check local storage for dummy token
-    const token = localStorage.getItem('dummy_auth_token');
-    if (token) {
-      setUser({ id: 'dummy-admin-id', email: 'admin@portfolio.local' });
-    } else {
-      setUser(null);
-    }
-    setLoading(false);
-  }, []);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   const signOut = async () => {
-    localStorage.removeItem('dummy_auth_token');
-    setUser(null);
-  };
+    await supabase.auth.signOut()
+  }
 
   return (
-    <AuthContext.Provider value={{ session: user ? { access_token: 'dummy' } : null, user, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, signOut }}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)
